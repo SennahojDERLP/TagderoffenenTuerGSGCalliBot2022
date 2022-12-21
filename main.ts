@@ -1,14 +1,23 @@
 let Aktiv = 0
 let Auswahl = 0
 function Kreisfahren () {
-	
+    callibot.motor(KMotor.links, KDir.rückwärts, 100)
+    for (let index = 0; index < 100; index++) {
+        callibot.setRgbLed(KRgbLed.RV, KRgbColor.rot, 8)
+        callibot.setLed(KMotor.rechts, KState.an)
+        led.plot(0, 4)
+        basic.pause(1000)
+        led.unplot(0, 4)
+        callibot.setLed(KMotor.rechts, KState.aus)
+        callibot.setRgbLed(KRgbLed.RV, KRgbColor.rot, 0)
+    }
 }
 input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
     Aktiv = Auswahl
     if (Aktiv == 1) {
         BlaulichtSirene()
     } else if (Aktiv == 2) {
-    	
+        Kreisfahren()
     } else if (Aktiv == 3) {
     	
     } else if (Aktiv == 4) {
