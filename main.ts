@@ -1,8 +1,6 @@
-let Aktiv = 0
-let Auswahl = 0
 function Kreisfahren () {
-    callibot.motor(KMotor.links, KDir.rückwärts, 100)
-    for (let index = 0; index < 50; index++) {
+    callibot.motor(KMotor.links, KDir.vorwärts, 100)
+    for (let index = 0; index < 10; index++) {
         callibot.setRgbLed(KRgbLed.RV, KRgbColor.gelb, 8)
         callibot.setLed(KMotor.rechts, KState.an)
         led.plot(0, 4)
@@ -12,6 +10,39 @@ function Kreisfahren () {
         callibot.setRgbLed(KRgbLed.RV, KRgbColor.gelb, 0)
     }
     callibot.motorStop(KMotor.links, KStop.Frei)
+}
+function Messen () {
+    for (let index = 0; index < 4; index++) {
+        basic.showString("" + input.temperature() + "Grad Celsius")
+        basic.pause(1000)
+        if (input.temperature() <= 10 || input.temperature() >= 35) {
+            basic.showLeds(`
+                . . . . .
+                . # . # .
+                . . . . .
+                . # # # .
+                # . . . #
+                `)
+        } else if (input.temperature() >= 25) {
+            basic.showLeds(`
+                . . . . .
+                . # . # .
+                . . . . .
+                # . . . #
+                . # # # .
+                `)
+        } else {
+            basic.showLeds(`
+                . . . . .
+                . # . # .
+                . . . . .
+                . # # # .
+                . . . . .
+                `)
+        }
+        basic.pause(1000)
+    }
+    basic.showCompass(2000)
 }
 input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
     Aktiv = Auswahl
@@ -24,17 +55,16 @@ input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
     } else if (Aktiv == 4) {
         GL380()
     } else if (Aktiv == 5) {
-    	
+        Messen()
     } else if (Aktiv == 6) {
-    	
+        basic.showString("Existiert Noch Nicht")
     } else if (Aktiv == 7) {
-    	
+        basic.showString(Impressum)
     } else {
         basic.showString("Fehler")
     }
     Auswahl = 0
     Aktiv = 0
-    basic.showString("Druecke B zur Auswahl und A zum Starten.")
 })
 function BlaulichtSirene () {
     for (let index = 0; index < 15; index++) {
@@ -69,11 +99,11 @@ function BlaulichtSirene () {
     music.stopAllSounds()
 }
 function Vorwaertszurueck () {
-    for (let index = 0; index < 10; index++) {
-        callibot.motor(KMotor.beide, KDir.vorwärts, 100)
+    for (let index = 0; index < 5; index++) {
+        callibot.motor(KMotor.beide, KDir.vorwärts, 50)
         basic.pause(2000)
         callibot.motorStop(KMotor.beide, KStop.Frei)
-        callibot.motor(KMotor.beide, KDir.rückwärts, 100)
+        callibot.motor(KMotor.beide, KDir.rückwärts, 50)
         basic.pause(2000)
         callibot.motorStop(KMotor.beide, KStop.Frei)
     }
@@ -92,11 +122,11 @@ input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
     } else if (Auswahl == 4) {
         basic.showString("Grosser Gott wir Loben dich")
     } else if (Auswahl == 5) {
-    	
+        basic.showString("Temperatur")
     } else if (Auswahl == 6) {
-    	
+        basic.showString("WIP")
     } else if (Auswahl == 7) {
-    	
+        basic.showString("Impressum")
     } else {
         basic.showString("Fehler")
     }
@@ -142,3 +172,8 @@ function GL380 () {
     music.playTone(392, music.beat(BeatFraction.Whole))
     music.playTone(349, 3)
 }
+let Auswahl = 0
+let Aktiv = 0
+let Impressum = ""
+basic.showString("Druecke B zur Auswahl und A zum Starten.")
+Impressum = "Dieses Programm wurde durch Johannes Heitz(11_INF_LK_1) 2022 fuer den Tag der Offenen Tuer 2023 erstellt"
