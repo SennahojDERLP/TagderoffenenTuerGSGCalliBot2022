@@ -1,6 +1,6 @@
 function Kreisfahren () {
     callibot.motor(KMotor.links, KDir.vorwärts, 100)
-    callibot.motor(KMotor.links, KDir.vorwärts, 21)
+    callibot.motor(KMotor.rechts, KDir.vorwärts, 50)
     for (let index = 0; index < 10; index++) {
         callibot.setRgbLed(KRgbLed.RV, KRgbColor.gelb, 8)
         callibot.setLed(KMotor.rechts, KState.an)
@@ -14,7 +14,7 @@ function Kreisfahren () {
 }
 function Messen () {
     for (let index = 0; index < 4; index++) {
-        basic.showString("" + input.temperature() + "Grad Celsius")
+        basic.showString("" + input.temperature() + "°C")
         basic.pause(1000)
         if (input.temperature() <= 10 || input.temperature() >= 35) {
             basic.showLeds(`
@@ -43,6 +43,13 @@ function Messen () {
         }
         basic.pause(1000)
     }
+    basic.showLeds(`
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        `)
 }
 input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
     Aktiv = Auswahl
@@ -57,9 +64,11 @@ input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
     } else if (Aktiv == 5) {
         Messen()
     } else if (Aktiv == 6) {
-        basic.showString("Existiert Noch Nicht")
+        _()
     } else if (Aktiv == 7) {
-        basic.showString(Impressum)
+        for (let index = 0; index < 5; index++) {
+            basic.showString(Impressum)
+        }
     } else {
         basic.showString("Fehler")
     }
@@ -76,7 +85,7 @@ function BlaulichtSirene () {
             # . . . #
             # . . . #
             `)
-        basic.setLedColor(0xff0000)
+        basic.setLedColor(0x0000ff)
         music.ringTone(131)
         callibot.setLed(KMotor.links, KState.aus)
         callibot.setLed(KMotor.rechts, KState.an)
@@ -118,19 +127,75 @@ input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
     } else if (Auswahl == 2) {
         basic.showString("Kreisfahren")
     } else if (Auswahl == 3) {
-        basic.showString("Vorwaerts und Rueckwaertsfahren")
+        basic.showString("Fahren")
     } else if (Auswahl == 4) {
-        basic.showString("Grosser Gott wir Loben dich")
+        basic.showString("GL380")
     } else if (Auswahl == 5) {
         basic.showString("Temperatur")
     } else if (Auswahl == 6) {
-        basic.showString("WIP")
+        basic.showString("'???")
     } else if (Auswahl == 7) {
         basic.showString("Impressum")
     } else {
         basic.showString("Fehler")
     }
 })
+function _ () {
+    Countdown = 100
+    while (Countdown != 0) {
+        basic.showNumber(Countdown)
+        Countdown += -1
+    }
+    while (150 >= music.tempo()) {
+        music.setTempo(100)
+        music.playMelody("C E G B C5 B F C ", 120)
+        music.setTempo(music.tempo() + 1)
+        basic.showLeds(`
+            . . . . .
+            . . . . .
+            . . # . .
+            . . . . .
+            . . . . .
+            `)
+        music.playMelody("C E G B C5 B F C ", music.tempo())
+        music.setTempo(music.tempo() + 1)
+        basic.showLeds(`
+            . . . . .
+            . . # . .
+            . # . # .
+            . . # . .
+            . . . . .
+            `)
+        music.playMelody("C E G B C5 B F C ", music.tempo())
+        music.setTempo(music.tempo() + 1)
+        basic.showLeds(`
+            . . # . .
+            . # . # .
+            # . . . #
+            . # . # .
+            . . # . .
+            `)
+        music.playMelody("C E G B C5 B F C ", music.tempo())
+        music.setTempo(music.tempo() + 1)
+        basic.showLeds(`
+            . # . # .
+            # . . . #
+            . . . . .
+            # . . . #
+            . # . # .
+            `)
+        music.playMelody("C E G B C5 B F C ", music.tempo())
+        music.setTempo(music.tempo() + 1)
+        basic.showLeds(`
+            # . . . #
+            . . . . .
+            . . . . .
+            . . . . .
+            # . . . #
+            `)
+        music.setTempo(music.tempo() + 1)
+    }
+}
 function GL380 () {
     for (let index = 0; index < 2; index++) {
         music.playTone(349, music.beat(BeatFraction.Double))
@@ -172,8 +237,8 @@ function GL380 () {
     music.playTone(392, music.beat(BeatFraction.Whole))
     music.playTone(349, 3)
 }
+let Countdown = 0
 let Auswahl = 0
 let Aktiv = 0
 let Impressum = ""
-basic.showString("Druecke B zur Auswahl und A zum Starten.")
 Impressum = "Dieses Programm wurde durch Johannes Heitz(11_INF_LK_1) 2022 fuer den Tag der Offenen Tuer 2023 erstellt"
