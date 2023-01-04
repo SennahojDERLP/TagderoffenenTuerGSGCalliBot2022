@@ -1,5 +1,6 @@
 function Kreisfahren () {
     callibot.motor(KMotor.links, KDir.vorwärts, 100)
+    callibot.motor(KMotor.links, KDir.vorwärts, 21)
     for (let index = 0; index < 10; index++) {
         callibot.setRgbLed(KRgbLed.RV, KRgbColor.gelb, 8)
         callibot.setLed(KMotor.rechts, KState.an)
@@ -9,7 +10,7 @@ function Kreisfahren () {
         callibot.setLed(KMotor.rechts, KState.aus)
         callibot.setRgbLed(KRgbLed.RV, KRgbColor.gelb, 0)
     }
-    callibot.motorStop(KMotor.links, KStop.Frei)
+    callibot.motorStop(KMotor.beide, KStop.Frei)
 }
 function Messen () {
     for (let index = 0; index < 4; index++) {
@@ -42,7 +43,6 @@ function Messen () {
         }
         basic.pause(1000)
     }
-    basic.showCompass(2000)
 }
 input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
     Aktiv = Auswahl
